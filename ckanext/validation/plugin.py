@@ -152,6 +152,12 @@ to create the database tables:
 
     def after_create(self, context, data_dict):
 
+        dataset_type = data_dict.get('type', None)
+        ignore_dataset_types = t.config.get('ckanext.validation.ignore_dataset_types', [])
+
+        if dataset_type and dataset_type in ignore_dataset_types:
+            return
+
         if not get_create_mode_from_config() == u'async':
             return
 
